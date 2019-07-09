@@ -6,6 +6,12 @@ function listProducts(data) {
     let list = '';
 
     for(let product of data.products) {
+        colors = '';
+
+        product.colors.forEach(function(color) {
+            colors += `<option value="${ color.nameColor }">${ color.nameColor }</option>`
+        });
+
         list += `
             <div class="col-sm-6 col-md-4 col-lg-3 product-info">
                 <div class="card">
@@ -16,6 +22,12 @@ function listProducts(data) {
                                 <label for="quantity">Cantidad</label>
                                 <input type="number" max="${ product.available }" id="quantity" class="form-control" required>
                                 <small id="" class="text-muted">${ product.available } disponibles</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="color">Color</label>
+                                <select class="custom-select" id="color">
+                                    ${ colors }
+                                </select>
                             </div>
                             <input type="submit" value="Agregar al carrito" class="btn btn-primary btn-product">
                         </form>
