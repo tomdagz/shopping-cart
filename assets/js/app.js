@@ -8,7 +8,7 @@ function listProducts(data) {
     let list = '';
 
     for(let product of data.products) {
-        colors = '<option selected>Selecciona el color</option>';
+        colors = '<option selected value="">Selecciona el color</option>';
 
         product.colors.forEach(function(color) {
             colors += `<option value="${ color.nameColor }">${ color.nameColor }</option>`
@@ -22,12 +22,12 @@ function listProducts(data) {
                         <form class="product-form" data-product-id=${ product.id }>
                             <div class="form-group">
                                 <label for="quantity">Cantidad</label>
-                                <input type="number" max="${ product.available }" id="quantity" class="form-control" required data-stock=${ product.available }>
+                                <input name="quantity" type="number" max="${ product.available }" id="quantity" class="form-control" required data-stock=${ product.available }>
                                 <small id="" class="text-muted">${ product.available } disponibles</small>
                             </div>
                             <div class="form-group">
                                 <label for="color">Color</label>
-                                <select class="custom-select" id="color">
+                                <select class="custom-select" id="color" name="color" required>
                                     ${ colors }
                                 </select>
                             </div>
@@ -54,7 +54,14 @@ function showProducts() {
 
 function addToCart(e) {
     e.preventDefault();
-    console.log(this)
+
+    const order_info = {
+        id: $(this).attr('data-product-id'),
+        amount: $(this).find('input[name="quantity"]').val(),
+        color: $(this).find('select[name="color"]').val(),
+        //size: 
+    }
+    storage.addProduct(order_info);
 }
 
 function init() {
