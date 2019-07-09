@@ -1,4 +1,6 @@
 const PRODUCTS_URL = 'http://test.oneclean.mx/test.php';
+const STORAGE_LEY = 'shopping_cart';
+let storage = null;
 
 window.addEventListener('load', init, false);
 
@@ -6,7 +8,7 @@ function listProducts(data) {
     let list = '';
 
     for(let product of data.products) {
-        colors = '';
+        colors = '<option selected>Selecciona el color</option>';
 
         product.colors.forEach(function(color) {
             colors += `<option value="${ color.nameColor }">${ color.nameColor }</option>`
@@ -17,10 +19,10 @@ function listProducts(data) {
                 <div class="card">
                     <div class="card-body">
                         <h5>${ product.name }</h5>
-                        <form class="product-form">
+                        <form class="product-form" data-product-id=${ product.id }>
                             <div class="form-group">
                                 <label for="quantity">Cantidad</label>
-                                <input type="number" max="${ product.available }" id="quantity" class="form-control" required>
+                                <input type="number" max="${ product.available }" id="quantity" class="form-control" required data-stock=${ product.available }>
                                 <small id="" class="text-muted">${ product.available } disponibles</small>
                             </div>
                             <div class="form-group">
@@ -50,6 +52,15 @@ function showProducts() {
     .catch(error => console.error(error))
 }
 
+function addToCart(e) {
+    e.preventDefault();
+    console.log(this)
+}
+
 function init() {
     showProducts()
+    storage = new StorageController(STORAGE_LEY);
+
+    $(document).on('submit', '.product-form', addToCart);
+
 }
