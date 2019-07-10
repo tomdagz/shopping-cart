@@ -5,3 +5,20 @@ block content
     .loading
         h3.text-center Cargando datos...
     .row#products
+    .modal#shoppingModal.modal.fade(tabindex='-1', role='dialog')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header
+            h5.modal-title Tu carrito
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            table.table
+                thead
+                    tr
+                        th Cantidad
+                        th Concepto
+                        th
+                tbody#cart-table
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal') Close

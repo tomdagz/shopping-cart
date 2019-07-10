@@ -9,9 +9,16 @@ function StorageController(key) {
                 products = JSON.parse(localStorage.getItem(this.key));
             }
 
+            products = products.filter((product) => {
+                return !(product.id === order_info.id && product.size === order_info.size && product.color === order_info.color)
+            })
+
             products.push(order_info)
             localStorage.setItem(this.key, JSON.stringify(products));
+
+            return true;
         }
+        return false;
     }
 
     this.getProducts = function() {
