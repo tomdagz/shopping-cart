@@ -1,0 +1,14 @@
+header
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarTogglerDemo03', aria-controls='navbarTogglerDemo03', aria-expanded='false', aria-label='Toggle navigation')
+            span.navbar-toggler-icon
+        a.navbar-brand(href='/') Home
+
+        .collapse.navbar-collapse.justify-content-end#navbarTogglerDemo03
+            ul.navbar-nav
+                li.nav-item
+                    a.nav-link.btn.btn-success#shoppig-cart-total(href='javascript:void(0)')
+                li.nav-item
+                    a.nav-link(href='javascript:void(0)', data-toggle="modal" data-target="#shoppingModal") Mostrar carro
+                li.nav-item
+                    a.nav-link#clear-cart(href='javascript:void(0)') Vaciar carro

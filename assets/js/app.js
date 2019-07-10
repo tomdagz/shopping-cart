@@ -1,4 +1,5 @@
 const PRODUCTS_URL = 'http://test.oneclean.mx/test.php';
+const BUY_URL = 'http://test.oneclean.mx/try.php';
 const STORAGE_LEY = 'shopping_cart';
 let storage = null;
 
@@ -80,19 +81,21 @@ function addToCart(e) {
 
 function updateShoppingCart() {
     const products = storage.getProducts();
-    let rows = ''
-    let total = 0
+    let rows = '';
+    let total = 0;
 
-    products.forEach(function(product) {
-        const price = parseFloat(product.amount) * parseFloat(product.price);
-        total += price;
+    if (products) {
+        products.forEach(function(product) {
+            const price = parseFloat(product.amount) * parseFloat(product.price);
+            total += price;
 
-        rows += `<tr>
-            <td>${ product.amount }</td>
-            <td>${ product.name } ${ product.size } ${ product.color }</td>
-            <td>$${ price }</td>
-        </tr>`
-    });
+            rows += `<tr>
+                <td>${ product.amount }</td>
+                <td>${ product.name } ${ product.size } ${ product.color }</td>
+                <td>$${ price }</td>
+            </tr>`
+        });
+    }
 
     rows += `<tr>
         <td colspan="2">Total</td>
@@ -100,6 +103,42 @@ function updateShoppingCart() {
     </tr>`
 
     document.getElementById('cart-table').innerHTML = rows;
+    document.getElementById('shoppig-cart-total').innerHTML = `Comprar $${total}`;
+}
+
+function clearShoppingCart() {
+    storage.resetStorage();
+    updateShoppingCart();
+}
+
+function buy() {
+    const products = storage.getProducts();
+    const productsArray = []
+
+    if (!products) return;
+ 
+    products.map((product) => {
+        const dictionary = {};
+        dictionary.id = product.id;
+        dictionary.amount = product.amount;
+        dictionary.color = product.color;
+        dictionary.size = product.size;
+        productsArray.push(dictionary)
+    });
+
+    const data = JSON.stringify({products: productsArray});
+
+    fetch(
+        BUY_URL,
+        {
+            method: 'POST',
+            body: data,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    ).then(res => res.json())
+    .catch(error => console.error('Error:', error))
 }
 
 function init() {
@@ -107,5 +146,7 @@ function init() {
     storage = new StorageController(STORAGE_LEY);
 
     $(document).on('submit', '.product-form', addToCart);
-
+    document.getElementById('clear-cart').addEventListener('click', clearShoppingCart);
+    document.getElementById('shoppig-cart-total').addEventListener('click', buy);
+    updateShoppingCart();
 }
